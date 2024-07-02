@@ -30,33 +30,30 @@ public class TakeOutSimulator{
         }
     }
 
-    public boolean shouldSimulate(){
+    public boolean shouldSimulate() {
         Food lowestCostFood = menu.getLowestCostFood();
 
         String userPrompt = "Enter 1 to proceed with the simulation or 0 to stop the simulation: ";
         IntUserInputRetriever<Boolean> retriever = selection -> {
-            if (selection!=0 && selection !=1){
-                throw new IllegalArgumentException(selection + "is not a valid input");
+            if (selection != 0 && selection != 1) {
+                throw new IllegalArgumentException(selection + " is not a valid input");
             }
-            if(selection == 1 ){
-                if(lowestCostFood.getPrice() > customer.getMoney()){
+            if (selection == 1) {
+                if (lowestCostFood.getPrice() <= customer.getMoney()) {
                     return true;
-                }else{
+                } else {
                     System.out.println("You do not have enough money");
                     return false;
                 }
-
-
             }
             return false;
         };
 
         return getOutputOnIntInput(userPrompt, retriever);
-
     }
 
     public Food getMenuSelection(){
-        String userPrompt = "Please choose a food item from the menu by entering the corresponding number:";
+        String userPrompt = "Please choose a food item from the menu by entering the corresponding number:\n" + menu;
         IntUserInputRetriever<Food> retriever = selection -> {
             List<Food> foodMenu = menu.getMenu();
             if(selection < 1 || selection > foodMenu.size()){
@@ -88,7 +85,7 @@ public class TakeOutSimulator{
         System.out.println("Processing payment...");
         int totalCost = shoppingBag.getTotalPrice();
         int customerMoney = customer.getMoney();
-        int remainingMoney = totalCost - customerMoney;
+        int remainingMoney = customerMoney - totalCost;
 
         if (remainingMoney < 0) {
             System.out.println("You do not have enough money to complete the purchase.");
