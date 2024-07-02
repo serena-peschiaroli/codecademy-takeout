@@ -25,4 +25,9 @@ public class Customer{
     public void setMoney(int money){
         this.money = money;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Hello %s! You have %d money.", name, money);
+    }
 }
